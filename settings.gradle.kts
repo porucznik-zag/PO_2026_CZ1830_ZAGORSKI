@@ -1,0 +1,1 @@
+rootProject.name = "PO_2026_CZ1830_ZAGORSKI"
