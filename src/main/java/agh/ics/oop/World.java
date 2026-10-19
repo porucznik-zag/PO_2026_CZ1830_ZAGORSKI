@@ -3,7 +3,7 @@ package agh.ics.oop;
 import agh.ics.oop.model.MoveDirection;
 
 public class World {
-    static void main(String[] args) {
+    public static void main(String[] args) {
         IO.println("Start");
         run(OptionsParser.parse(args));
         IO.println("Stop");
