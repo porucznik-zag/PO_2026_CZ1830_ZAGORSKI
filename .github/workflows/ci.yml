@@ -33,11 +33,11 @@ jobs:
         uses: actions/checkout@v7
 
       # Ta sama wersja Javy co w build.gradle (java { toolchain { languageVersion = 25 } }).
-      - name: Set up JDK 25
+      - name: Set up JDK 27
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '25'
+          java-version: '27'
 
       # cache-provider: basic - otwartoźródłowy cache, działa również w repozytoriach prywatnych.
       - name: Set up Gradle
