@@ -47,7 +47,9 @@ jobs:
 
       # "build" kompiluje kod i uruchamia testy jednostkowe (task "test").
       - name: Build and run tests
-        run: ./gradlew build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
 
       - name: Upload test report
         if: failure()
