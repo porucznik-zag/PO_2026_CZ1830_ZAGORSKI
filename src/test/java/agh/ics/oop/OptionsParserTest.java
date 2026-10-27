@@ -1,22 +1,42 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.MoveDirection;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OptionsParserTest {
-    @Test
-    void eachLetterIsParsedIndividually() {
-        assertArrayEquals(new MoveDirection[]{MoveDirection.FORWARD}, OptionsParser.parse(new String[]{"f"}));
-        assertArrayEquals(new MoveDirection[]{MoveDirection.BACKWARD}, OptionsParser.parse(new String[]{"b"}));
-        assertArrayEquals(new MoveDirection[]{MoveDirection.RIGHT}, OptionsParser.parse(new String[]{"r"}));
-        assertArrayEquals(new MoveDirection[]{MoveDirection.LEFT}, OptionsParser.parse(new String[]{"l"}));
-        assertArrayEquals(new MoveDirection[]{}, OptionsParser.parse(new String[]{"?"}));
+    // stream danych do testu parametryzowanego
+    static Stream<Arguments> provideIndividualLetters() {
+        return Stream.of(
+                Arguments.of(new String[]{"f"}, new MoveDirection[]{MoveDirection.FORWARD}),
+                Arguments.of(new String[]{"b"}, new MoveDirection[]{MoveDirection.BACKWARD}),
+                Arguments.of(new String[]{"r"}, new MoveDirection[]{MoveDirection.RIGHT}),
+                Arguments.of(new String[]{"l"}, new MoveDirection[]{MoveDirection.LEFT}),
+                Arguments.of(new String[]{"?"}, new MoveDirection[]{})
+        );
+    }
+
+    // test parametryzowany wykorzystujący stream
+    @ParameterizedTest(name = "{0} should be parsed to {1}")
+    @DisplayName("Parsing each letter individually")
+    @MethodSource("provideIndividualLetters")
+    void eachLetterIsParsedIndividually(String[] input, MoveDirection[] expectedOutput) {
+        // when
+        MoveDirection[] result = OptionsParser.parse(input);
+
+        // then
+        assertArrayEquals(expectedOutput, result);
     }
 
     @Test
-    void aLotOfLettersAreParsed() {
+    void differentLettersAreParsed() {
         assertArrayEquals(new MoveDirection[]{
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD,
