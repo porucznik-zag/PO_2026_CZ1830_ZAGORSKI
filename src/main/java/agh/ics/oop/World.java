@@ -1,44 +1,32 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
 
 public class World {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         IO.println("Start");
         run(OptionsParser.parse(args));
         IO.println("Stop");
+
+        IO.println();
+
+        Vector2d position1 = new Vector2d(1,2);
+        IO.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        IO.println(position2);
+        IO.println(position1.add(position2));
+
+        IO.println();
+
+        MapDirection direction1 = MapDirection.NORTH;
+        MapDirection previousDirection = direction1.previous();
+        MapDirection nextDirection = direction1.next();
+        IO.println("Wektor jednostkowy dla %s to %s".formatted(direction1.toString(), direction1.toUnitVector()));
+        IO.println("Poprzedni kierunek dla %s to %s".formatted(direction1.toString(), previousDirection.toString()));
+        IO.println("Następny kierunek dla %s to %s".formatted(direction1.toString(), nextDirection.toString()));
     }
-
-    // Version 1
-//    static void run(String[] args) {
-//        StringBuilder result = new StringBuilder();
-//
-//        for(int i = 0; i < args.length; i++) {
-//           result.append(args[i]);
-//           if (i < args.length - 1 ){
-//               result.append(",");
-//            }
-//        }
-//
-//        IO.println(result.toString());
-//    }
-
-    // Version 2
-//    static void run(String[] args) {
-//        for (String arg: args) {
-//            String message = switch (arg) {
-//                case "f" -> "Zwierzak idzie do przodu";
-//                case "b" -> "Zwierzak idzie do tyłu";
-//                case "r" -> "Zwierzak skręca w prawo";
-//                case "l" -> "Zwierzak skręca w lewo";
-//                default -> null;
-//            };
-//
-//            if (message != null) {
-//                IO.println(message);
-//            }
-//        }
-//    }
 
 
     static void run(MoveDirection[] directions) {
