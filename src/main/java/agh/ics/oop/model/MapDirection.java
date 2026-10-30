@@ -38,7 +38,7 @@ public enum MapDirection {
             case NORTH -> "Północ";
             case SOUTH -> "Południe";
             case WEST -> "Zachód";
-            case EAST -> "Wschów";
+            case EAST -> "Wschód";
         };
     }
 }

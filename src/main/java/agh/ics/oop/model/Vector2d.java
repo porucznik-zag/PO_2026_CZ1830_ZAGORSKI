@@ -52,6 +52,14 @@ public class Vector2d {
         return new Vector2d(-x, -y);
     }
 
+    public boolean isXInRange(int x1, int x2) {
+        return x1 <= this.x &&  this.x <= x2;
+    }
+
+    public boolean isYInRange(int y1, int y2) {
+        return y1 <= this.y &&  this.y <= y2;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
