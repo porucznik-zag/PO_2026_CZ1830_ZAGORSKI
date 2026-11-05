@@ -33,6 +33,10 @@ public class Simulation {
         int numberOfAnimals = animals.size();;
         int currentMoveIndex = 0;
 
+        if (numberOfAnimals == 0) {
+            return;
+        }
+
         for (MoveDirection direction: animalsMoves) {
             int currentAnimalIndex = currentMoveIndex % numberOfAnimals;
             Animal currentAnimal = animals.get(currentAnimalIndex);
