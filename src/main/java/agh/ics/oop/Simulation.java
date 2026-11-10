@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +8,24 @@ import java.util.List;
 public class Simulation {
     private final List<Animal> animals;
     private final List<MoveDirection> animalsMoves;
+    private final WorldMap map;
 
 
-    public Simulation(List<Vector2d> animalsPositions, List<MoveDirection> animalsMoves) {
+    public Simulation(List<Vector2d> animalsPositions, List<MoveDirection> animalsMoves, WorldMap map) {
         this.animals = new ArrayList<>();
         this.animalsMoves = animalsMoves;
+        this.map = map;
 
         for (Vector2d position: animalsPositions) {
-            this.animals.add(new Animal(position));
+            Animal animal = new Animal(position);
+            if (this.map.place(animal)) {
+                this.animals.add(animal);
+            }
         }
     }
 
     public Simulation() {
-        this(new ArrayList<>(), new ArrayList<>());
+        this(new ArrayList<>(), new ArrayList<>(), new RectangularMap());
     }
 
     public List<Animal> getAnimals() {
@@ -30,7 +33,7 @@ public class Simulation {
     }
 
     public void run() {
-        int numberOfAnimals = animals.size();;
+        int numberOfAnimals = animals.size();
         int currentMoveIndex = 0;
 
         if (numberOfAnimals == 0) {
@@ -41,14 +44,8 @@ public class Simulation {
             int currentAnimalIndex = currentMoveIndex % numberOfAnimals;
             Animal currentAnimal = animals.get(currentAnimalIndex);
 
-            boolean moveResult = currentAnimal.move(direction);
-
-            if (moveResult) {
-                IO.println("Zwierzę %d : %s".formatted(currentAnimalIndex, currentAnimal.toString()));
-            }
-            else {
-                IO.println("Zwierzę %d : nieprawidłowy ruch".formatted(currentAnimalIndex));
-            }
+            map.move(currentAnimal, direction);
+            IO.println(map.toString());
 
             currentMoveIndex++;
         }

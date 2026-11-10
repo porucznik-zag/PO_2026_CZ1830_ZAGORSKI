@@ -41,4 +41,13 @@ public enum MapDirection {
             case EAST -> "Wschód";
         };
     }
+
+    public String toStringSchematic(){
+        return switch(this) {
+            case NORTH -> "N";
+            case SOUTH -> "S";
+            case WEST -> "W";
+            case EAST -> "E";
+        };
+    }
 }
