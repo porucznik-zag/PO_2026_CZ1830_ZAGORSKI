@@ -2,9 +2,7 @@ package agh.ics.oop.model;
 
 public class Animal {
     protected static final MapDirection DEFAULT_ORIENTATION = MapDirection.NORTH;
-    protected static final Vector2d DEFAULT_POSITION = new Vector2d(2, 2);
-    protected static final Vector2d MAP_START = new Vector2d(0, 0);
-    protected static final Vector2d MAP_STOP = new Vector2d(4, 4);
+    protected static final Vector2d DEFAULT_POSITION = new Vector2d(0, 0);
 
     private MapDirection orientation;
     private Vector2d position;
@@ -18,11 +16,15 @@ public class Animal {
         this(DEFAULT_POSITION);
     }
 
+    public Vector2d getPosition() {
+        return this.position;
+    }
+
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
 
-    public boolean move(MoveDirection direction) {
+    public boolean move(MoveDirection direction, MoveValidator validator) {
         Vector2d newPosition = null;
         MapDirection newOrientation = null;
 
@@ -40,7 +42,7 @@ public class Animal {
         }
 
         // position
-        if (newPosition != null && newPosition.follows(MAP_START) && newPosition.precedes(MAP_STOP)) {
+        if (newPosition != null && validator.canMoveTo(newPosition)) {
             this.position = newPosition;
             return true;
         }
@@ -50,6 +52,6 @@ public class Animal {
 
     @Override
     public String toString() {
-        return  "[%d,%d][%s]".formatted(position.getX(), position.getY(), orientation.toString());
+        return  "%s".formatted(orientation.toStringSchematic());
     }
 }

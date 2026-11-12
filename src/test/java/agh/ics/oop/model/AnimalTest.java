@@ -1,54 +1,46 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.Simulation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnimalTest {
+    // Stub (zaślepka) dla MoveValidator, który imituje nieskończoną mapę, bez zajętych pól
+    private final MoveValidator alwaysTrueValidator = _ -> true;
+
     @Test
     void newCreatedAnimaShouldHaveCorrectState() {
         // given and when
         Animal animal = new Animal();
 
         // then
-        assertTrue(animal.isAt(new Vector2d(2, 2)));
-        assertEquals("[2,2][Północ]", animal.toString());
+        assertTrue(animal.isAt(Animal.DEFAULT_POSITION));
+        assertEquals(Animal.DEFAULT_ORIENTATION.toStringSchematic(), animal.toString());
     }
 
     @Test
     void animalShouldRotateCorrectly() {
         // given and when
         Animal animal = new Animal();
-        animal.move(MoveDirection.RIGHT);
-        animal.move(MoveDirection.RIGHT);
-        animal.move(MoveDirection.LEFT);
+        animal.move(MoveDirection.RIGHT, alwaysTrueValidator);
+        animal.move(MoveDirection.RIGHT, alwaysTrueValidator);
+        animal.move(MoveDirection.LEFT, alwaysTrueValidator);
 
         // then
-        assertEquals("[2,2][Wschód]", animal.toString());
+        assertEquals("E", animal.toString());
     }
-
 
     @Test
-    void animalShouldNotMoveOutsideTheMap() {
+    void animalShouldMoveCorrectlyOnEmptyInfinityMap() {
         // given
-        Animal animalInUpperCorner = new Animal(Animal.MAP_STOP);
-        Animal animalInLowerCorner = new Animal(Animal.MAP_START);
+        Animal animal = new Animal();
 
         // when
-        animalInUpperCorner.move(MoveDirection.FORWARD);
-        animalInUpperCorner.move(MoveDirection.RIGHT);
-        animalInUpperCorner.move(MoveDirection.FORWARD);
-
-        animalInLowerCorner.move(MoveDirection.LEFT);
-        animalInLowerCorner.move(MoveDirection.FORWARD);
-        animalInLowerCorner.move(MoveDirection.LEFT);
-        animalInLowerCorner.move(MoveDirection.FORWARD);
-
+        animal.move(MoveDirection.FORWARD, alwaysTrueValidator);
+        animal.move(MoveDirection.FORWARD, alwaysTrueValidator);
+        animal.move(MoveDirection.BACKWARD, alwaysTrueValidator);
 
         // then
-        assertEquals("[4,4][Wschód]", animalInUpperCorner.toString());
-        assertEquals("[0,0][Południe]", animalInLowerCorner.toString());
+        assertTrue(animal.isAt(new Vector2d(0, 1)));
     }
-
 }
