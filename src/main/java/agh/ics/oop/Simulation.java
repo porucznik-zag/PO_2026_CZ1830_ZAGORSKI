@@ -5,46 +5,41 @@ import agh.ics.oop.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
-    private final List<Animal> animals;
-    private final List<MoveDirection> animalsMoves;
-    private final WorldMap map;
+public class Simulation<T, P> {
+    private final List<T> objects;
+    private final List<MoveDirection> objectsMoves;
+    private final WorldMap<T, P> map;
 
 
-    public Simulation(List<Vector2d> animalsPositions, List<MoveDirection> animalsMoves, WorldMap map) {
-        this.animals = new ArrayList<>();
-        this.animalsMoves = animalsMoves;
+    public Simulation(List<T> objects, List<MoveDirection> objectsMoves, WorldMap<T, P> map) {
+        this.objects = new ArrayList<>();
+        this.objectsMoves = objectsMoves;
         this.map = map;
 
-        for (Vector2d position: animalsPositions) {
-            Animal animal = new Animal(position);
-            if (this.map.place(animal)) {
-                this.animals.add(animal);
+        for (T object: objects) {
+            if (this.map.place(object)) {
+                this.objects.add(object);
             }
         }
     }
 
-    public Simulation() {
-        this(new ArrayList<>(), new ArrayList<>(), new RectangularMap());
-    }
-
-    public List<Animal> getAnimals() {
-        return this.animals;
+    public List<T> getObjects() {
+        return this.objects;
     }
 
     public void run() {
-        int numberOfAnimals = animals.size();
+        int numberOfAnimals = objects.size();
         int currentMoveIndex = 0;
 
         if (numberOfAnimals == 0) {
             return;
         }
 
-        for (MoveDirection direction: animalsMoves) {
+        for (MoveDirection direction: objectsMoves) {
             int currentAnimalIndex = currentMoveIndex % numberOfAnimals;
-            Animal currentAnimal = animals.get(currentAnimalIndex);
+            T currentObject = objects.get(currentAnimalIndex);
 
-            map.move(currentAnimal, direction);
+            map.move(currentObject, direction);
             IO.println(map.toString());
 
             currentMoveIndex++;
