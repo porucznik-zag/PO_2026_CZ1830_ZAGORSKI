@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AnimalTest {
     // Stub (zaślepka) dla MoveValidator, który imituje nieskończoną mapę, bez zajętych pól
-    private final MoveValidator alwaysTrueValidator = _ -> true;
+    private final MoveValidator<Vector2d> alwaysTrueValidator = _ -> true;
 
     @Test
     void newCreatedAnimaShouldHaveCorrectState() {

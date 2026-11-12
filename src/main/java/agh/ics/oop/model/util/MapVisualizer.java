@@ -2,27 +2,28 @@ package agh.ics.oop.model.util;
 
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
+import agh.ics.oop.model.WorldObject;
 
 /**
- * The map visualizer converts the {@link WorldMap} map into a string
- * representation.
+ * The map visualizer converts the {@link WorldMap} map (but only 2D) into
+ * a string representation.
  *
- * @author apohllo, idzik
+ * @author apohllo, idzik, porucznik-zag
  */
-public class MapVisualizer {
+public class MapVisualizer<T extends WorldObject> {
     private static final String EMPTY_CELL = " ";
     private static final String FRAME_SEGMENT = "-";
     private static final String CELL_SEGMENT = "|";
-    private final WorldMap map;
+    private final WorldMap<T, Vector2d> map;
 
-    /**
-     * Initializes the MapVisualizer with an instance of map to visualize.
-     *
-     * @param map
-     */
-    public MapVisualizer(WorldMap map) {
-        this.map = map;
-    }
+        /**
+         * Initializes the MapVisualizer with an instance of map to visualize.
+         *
+         * @param map the world map instance to be visualized
+         */
+        public MapVisualizer(WorldMap<T, Vector2d> map) {
+            this.map = map;
+        }
 
     /**
      * Convert selected region of the map into a string. It is assumed that the

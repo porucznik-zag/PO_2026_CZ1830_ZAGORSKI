@@ -1,29 +1,26 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
-
 /**
  * The interface responsible for interacting with the map of the world.
- * Assumes that Vector2d and MoveDirection classes are defined.
+ * Assumes that position class and MoveDirection classes are defined.
  *
- * @author apohllo, idzik
+ * @author apohllo, idzik, porucznik-zag
  */
-public interface WorldMap extends MoveValidator {
+public interface WorldMap<T, P> extends MoveValidator<P> {
 
     /**
-     * Place a new animal on the map.
+     * Place a new object on the map.
      *
-     * @param animal The animal to be placed on the map.
-     * @return True if the animal was placed. The rules for valid placement are the same as for movement.
+     * @param object The object to be placed on the map.
+     * @return True if the object was placed. The rules for valid placement are the same as for movement.
      */
-    boolean place(Animal animal);
+    boolean place(T object);
 
     /**
-     * Moves an animal (if it is present on the map) according to specified direction.
+     * Moves an object (if it is present on the map) according to specified direction.
      * If the move is not possible, this method has no effect.
      */
-    void move(Animal animal, MoveDirection direction);
+    void move(T object, MoveDirection direction);
 
     /**
      * Return true if given position on the map is occupied. Should not be
@@ -33,13 +30,13 @@ public interface WorldMap extends MoveValidator {
      * @param position Position to check.
      * @return True if the position is occupied.
      */
-    boolean isOccupied(Vector2d position);
+    boolean isOccupied(P position);
 
     /**
-     * Return an animal at a given position.
+     * Return an object at a given position.
      *
      * @param position The position of the animal.
      * @return animal or null if the position is not occupied.
      */
-    Animal objectAt(Vector2d position);
+    T objectAt(P position);
 }
