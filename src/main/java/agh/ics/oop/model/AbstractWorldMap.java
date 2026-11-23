@@ -10,20 +10,39 @@ import java.util.Map;
 public abstract class AbstractWorldMap implements WorldMap{
     protected final Map<Vector2d, Animal> animals;
     protected final MapVisualizer visualizer;
+    private final List<MapChangeListener> observers = new ArrayList<>();
 
     protected AbstractWorldMap() {
         this.animals = new HashMap<>();
         this.visualizer = new MapVisualizer(this);
     }
 
+    public void addObserver(MapChangeListener observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(MapChangeListener observer) {
+        observers.remove(observer);
+    }
+
+    protected void mapChanged(String message) {
+        for (MapChangeListener observer : observers) {
+            observer.mapChanged(this, message);
+        }
+    }
+
 
     @Override
-    public boolean place(WorldElement element) {
-        if (!(element instanceof Animal animal) || !canMoveTo(element.getPosition()))
-            return false;
+    public void place(WorldElement element) {
+        if (!(element instanceof Animal animal)) {
+            throw new IllegalArgumentException("Only Animal objects can be placed on this map.");
+        }
+        if (!canMoveTo(animal.getPosition())) {
+            throw new IllegalArgumentException("Position " + animal.getPosition() + " is not correct");
+        }
 
         animals.put(animal.getPosition(), animal);
-        return true;
+        mapChanged("Animal placed at " + animal.getPosition());
     }
 
     @Override
@@ -36,9 +55,14 @@ public abstract class AbstractWorldMap implements WorldMap{
         boolean result = animal.move(direction, this);
         Vector2d newPosition = animal.getPosition();
 
-        if (result && !oldPosition.equals(newPosition)) {
-            animals.remove(oldPosition);
-            animals.put(newPosition, animal);
+        if (result) {
+            if (!oldPosition.equals(newPosition)) {
+                animals.remove(oldPosition);
+                animals.put(newPosition, animal);
+                mapChanged("Animal moved from %s to %s".formatted(oldPosition, newPosition));
+            } else {
+                mapChanged("Animal at %s rotated (%s)".formatted(newPosition, direction));
+            }
         }
     }
 
@@ -62,11 +86,11 @@ public abstract class AbstractWorldMap implements WorldMap{
         return new ArrayList<>(animals.values());
     }
 
-    public abstract MapConstraints getCurrentConstraints();
+    public abstract Boundary getCurrentBounds();
 
     @Override
     public String toString() {
-        MapConstraints constraints = getCurrentConstraints();
-        return visualizer.draw(constraints.lowerLeft(), constraints.upperRight());
+        Boundary bounds = getCurrentBounds();
+        return visualizer.draw(bounds.lowerLeft(), bounds.upperRight());
     }
 }

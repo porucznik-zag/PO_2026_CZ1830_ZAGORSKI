@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
     @Test
-    void simulationShouldRunAndEndsAtCorrectPositions() {
+    void simulationShouldRunAndEndsAtCorrectPositions() throws UnsupportedParameterException {
         // given
         String[] args = {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f"};
         List<MoveDirection> animalsDirections = OptionsParser.parse(args);

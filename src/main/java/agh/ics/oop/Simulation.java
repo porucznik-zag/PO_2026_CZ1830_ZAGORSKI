@@ -18,8 +18,11 @@ public class Simulation {
 
         for (Vector2d position: animalsPositions) {
             Animal animal = new Animal(position);
-            if (this.map.place(animal)) {
+            try {
+                this.map.place(animal);
                 this.animals.add(animal);
+            } catch (IllegalArgumentException e) {
+                IO.println(e.getMessage());
             }
         }
     }
@@ -45,7 +48,6 @@ public class Simulation {
             Animal currentAnimal = animals.get(currentAnimalIndex);
 
             map.move(currentAnimal, direction);
-            IO.println(map.toString());
 
             currentMoveIndex++;
         }

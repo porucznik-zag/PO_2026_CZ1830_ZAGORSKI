@@ -17,9 +17,8 @@ public interface WorldMap extends MoveValidator {
      * Place a new animal on the map.
      *
      * @param element The world element to be placed on the map.
-     * @return True if the animal was placed. The rules for valid placement are the same as for movement.
      */
-    boolean place(WorldElement element);
+    void place(WorldElement element);
 
     /**
      * Moves an animal (if it is present on the map) according to specified direction.

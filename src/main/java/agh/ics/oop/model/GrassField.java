@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.MapVisualizer;
 import agh.ics.oop.model.util.RandomPositionGenerator;
 
 import java.util.HashMap;
@@ -32,18 +31,19 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public boolean place(WorldElement element) {
+    public void place(WorldElement element) {
         // przypadek dla Grass
         if (element instanceof Grass grass) {
             if (isOccupied(grass.getPosition())) {
-                return false;
+                throw new IllegalArgumentException("Position " + grass.getPosition() + " is occupied.");
             }
             grassClumps.put(grass.getPosition(), grass);
-            return true;
+            mapChanged("Grass placed at " + grass.getPosition());
+            return;
         }
 
         // domyślny przypadek dla Animal z klasy AbstractWorldMap
-        return super.place(element);
+        super.place(element);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public MapConstraints getCurrentConstraints() {
+    public Boundary getCurrentBounds() {
         List<WorldElement> elements = getElements();
 
         // przypadek, w którym mapa jest pusta
         if (elements.isEmpty()) {
-            return new MapConstraints(new Vector2d(0, 0), new Vector2d(0, 0));
+            return new Boundary(new Vector2d(0, 0), new Vector2d(0, 0));
         }
 
         Vector2d lowerLeftConstraint = elements.getFirst().getPosition();
@@ -83,6 +83,6 @@ public class GrassField extends AbstractWorldMap {
             upperRightConstraint = upperRightConstraint.upperRight(position);
         }
 
-        return new MapConstraints(lowerLeftConstraint, upperRightConstraint);
+        return new Boundary(lowerLeftConstraint, upperRightConstraint);
     }
 }
