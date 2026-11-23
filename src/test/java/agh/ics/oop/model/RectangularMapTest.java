@@ -14,13 +14,13 @@ class RectangularMapTest {
         Animal outOfBoundsAnimal = new Animal(new Vector2d(4, 4));
 
         // when and then
-        assertTrue(map.place(animal1));
-        assertFalse(map.place(animal2));
-        assertFalse(map.place(outOfBoundsAnimal));
+        assertDoesNotThrow(() -> map.place(animal1));
+        assertThrows(IllegalArgumentException.class, () -> map.place(animal2));
+        assertThrows(IllegalArgumentException.class, () -> map.place(outOfBoundsAnimal));
     }
 
     @Test
-    void shouldAnimalMoveStopsOnMapConstraints() {
+    void shouldAnimalMoveStopsOnMapBounds() {
         // given
         WorldMap map = new RectangularMap(2, 2);
         Animal animal = new Animal(new Vector2d(0, 0));

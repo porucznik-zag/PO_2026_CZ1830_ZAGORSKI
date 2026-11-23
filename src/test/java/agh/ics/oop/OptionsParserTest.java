@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.UnsupportedParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,8 +31,9 @@ class OptionsParserTest {
     @ParameterizedTest(name = "{0} should be parsed to {1}")
     @DisplayName("Parsing each letter individually")
     @MethodSource("provideIndividualLetters")
-    void eachLetterIsParsedIndividually(String[] input, List<MoveDirection> expectedOutput) {
+    void eachLetterIsParsedIndividually(String[] input, List<MoveDirection> expectedOutput) throws UnsupportedParameterException {
         // when
+        // List<MoveDirection> result = assertDoesNotThrow(() -> OptionsParser.parse(input)); // można też i tak
         List<MoveDirection> result = OptionsParser.parse(input);
 
         // then
@@ -39,7 +41,7 @@ class OptionsParserTest {
     }
 
     @Test
-    void differentLettersAreParsed() {
+    void differentLettersAreParsed() throws UnsupportedParameterException {
         assertEquals(new ArrayList<>(List.of(
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD,
@@ -52,7 +54,7 @@ class OptionsParserTest {
     }
 
     @Test
-    void incorrectArgsParsing() {
+    void incorrectArgsParsing() throws UnsupportedParameterException {
         assertEquals(new ArrayList<>(), OptionsParser.parse(new String[]{"k", "a", "m", "y", "k", "?", "TAK", "a co", "?"}));
     }
 

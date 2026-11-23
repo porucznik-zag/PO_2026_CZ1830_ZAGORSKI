@@ -8,7 +8,8 @@ public class RectangularMap extends AbstractWorldMap {
     private final Vector2d mapStop;
 
     public RectangularMap(int width, int height) {
-        if (width <= 0 || height <= 0) throw new IllegalArgumentException("Map width and height cannot be less than 0.");
+        if (width <= 0 || height <= 0)
+            throw new IllegalArgumentException("Map width and height must be positive.");
         this.mapStart = new Vector2d(0, 0);
         this.mapStop = mapStart.add(new Vector2d(width - 1, height - 1));
     }
@@ -23,7 +24,7 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public MapConstraints getCurrentConstraints() {
-        return new MapConstraints(mapStart, mapStop);
+    public Boundary getCurrentBounds() {
+        return new Boundary(mapStart, mapStop);
     }
 }

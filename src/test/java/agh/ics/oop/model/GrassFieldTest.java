@@ -55,12 +55,12 @@ class GrassFieldTest {
     }
 
     @Test
-    void shouldGetCurrentConstraintsMethodWorkCorrectly() {
+    void shouldGetCurrentBoundsMethodWorkCorrectly() {
         GrassField map = new GrassField(0);
         map.place(new Grass(new Vector2d(-5, -4)));
         map.place(new Animal(new Vector2d(5, 4)));
 
-        MapConstraints constraints = new MapConstraints(new Vector2d(-5, -4), new Vector2d(5, 4));
-        assertEquals(constraints, map.getCurrentConstraints());
+        Boundary bounds = new Boundary(new Vector2d(-5, -4), new Vector2d(5, 4));
+        assertEquals(bounds, map.getCurrentBounds());
     }
 }
